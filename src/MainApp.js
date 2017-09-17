@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import  Header from './Components/Common/Header';
+import YouTube from 'react-native-youtube'
+//import  Button from './Components/Common/Button';
+
 import { 
     AppRegistry,
     View,
@@ -17,6 +21,7 @@ import {
     },
     maxWidth: 480
   };
+
  class MainApp extends Component {
     constructor() {
         super();
@@ -45,32 +50,75 @@ import {
     
             let source = 'data:image/jpeg;base64,' + response.data;
             this.setState({image: source});
-       }
+          }
+
         }); 
     } 
-
+    
     render(){
+        ///////
+        const opts = {
+            height: '200',
+            width: '600',
+            playerVars: { 
+                //'https://developers.google.com/youtube/player_parameters'
+                autoplay: 1
+            }
+          };
+          ////////
         return(
             <View style={styles.container}>
+                <Header headerText= "MedAID"/>
+                <Image source={{uri: this.state.image}} style={styles.image}/>
                 <TouchableOpacity onPress={this.selectImage.bind(this)} style={{ marginTop: 15,
                 justifyContent: 'center', alignItems: 'center'}}>
-                    <Text>Take Pic</Text>
+                <Text style={styles.TextContainer}>Snap or Choose a pic from your device</Text>
                 </TouchableOpacity>
-                  <Image source={{uri: this.state.image}} style={styles.image}/>
+                <Text style={styles.TextContainer2}>Sample Video</Text>
+                <YouTube
+                    videoId="xAgEJwiToHM" 
+                    opts={opts}
+                    onReady={this._onReady}
+                />
            </View>
         );
         
     }
+    _onReady(event) {
+        // access to player in all event handlers via event.target 
+        event.target.pauseVideo();
+      }
 }
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#ADD8E6',
         flex: 1,
     },
     image: {
         height: 200,
         width: 200,
-    }
+        justifyContent: 'center', 
+        alignItems: 'center',
+    },
+    TextContainer:{
+        fontSize: 20,
+        justifyContent: 'center', 
+        alignItems: 'center',
+        backgroundColor: '#3BB9FF',//gray
+        paddingTop: 15,
+        height: 60,
+        shadowColor: '#000', //black
+        shadowOffset: {height: 2, weight: 0},
+        shadowOpacity: 0.9,//opacity ranges{0,1}
+        elevation: 2,
+        position: 'relative' 
+        
+    },TextContainer2:{
+        fontSize: 20,
+        justifyContent: 'center', 
+        alignItems: 'center',
+    } 
     
 })
 
@@ -78,3 +126,29 @@ const styles = StyleSheet.create({
 
 
 AppRegistry.registerComponent('myDoc', () => MainApp);
+
+
+/*class Example extends React.Component {
+    render() {
+      const opts = {
+        height: '390',
+        width: '640',
+        playerVars: { // https://developers.google.com/youtube/player_parameters 
+          autoplay: 1
+        }
+      };
+   
+      return (
+        <YouTube
+          videoId="2g811Eo7K8U"
+          opts={opts}
+          onReady={this._onReady}
+        />
+      );
+    }
+   
+    _onReady(event) {
+      // access to player in all event handlers via event.target 
+      event.target.pauseVideo();
+    }
+  }*/

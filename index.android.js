@@ -1,1 +1,2 @@
-import MainApp from '.src/MainApp'
+import { AppRegistry } from 'react-native';
+import MainApp from './src/MainApp'
